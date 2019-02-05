@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   mount ShopifyApp::Engine, at: '/'
   root to: 'pages#home'
+  require "sidekiq/web"
+  mount Sidekiq::Web => '/sidekiq'
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       get 'products', to: 'products#index'

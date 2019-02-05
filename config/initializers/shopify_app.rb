@@ -11,10 +11,10 @@ ShopifyApp.configure do |config|
   config.session_repository = Shop
   # config.root_url = '/nested'
   # webhook
-  # config.webhooks = [
-  #   {topic: 'products/create', address: "ENV['ROOT_URL']/webhooks/products_update"}
+  config.webhooks = [
+    {topic: 'products/update', address: 'https://ab889b2e.ngrok.io/webhooks/products_update', format: 'json'}
+  ]
+  # config.scripttags = [
+  #   {event:'onload', src: 'https://my-shopifyapp.herokuapp.com/fancy.js'}
   # ]
-  config.scripttags = [
-      {event:'onload', src: 'https://my-shopifyapp.herokuapp.com/fancy.js'}
-    ]
 end
