@@ -31,11 +31,14 @@ class ProductsUpdateJob < ApplicationJob
         end
       end
 
+
     else
     p "______________Product Don't Exists anymore______________"
 
       # product just get delete
     end
+    p "______________end perform______________"
+
   end
 
   def deadline(params)
@@ -43,15 +46,21 @@ class ProductsUpdateJob < ApplicationJob
 
     # get the deadline and transform to DateTime
     @deadline = @shopify_product.metafields.select { |meta| meta.attributes["key"] == "deadline"}.first.value
-    @date_dead_line = Time.parse(@deadline)
-    # @date_dead_line = Time.now + 50
+    # @date_dead_line = Time.parse(@deadline)
+    @date_dead_line = Time.now + 50
 
     # if there is an unpublish job for this product, cancel it
     Sidekiq::ScheduledSet.new.each do |jobi|
       delete_previous_job(jobi)
     end
+
+    Sidekiq::ScheduledSet.new.each do |jobi|
+      p jobi.jid
+    end
     # if it an update, cancel previous job and set it a new one.
     UnpublishProductJob.set(wait_until: @date_dead_line).perform_later(params.first)
+    p "______________Deadline - end______________"
+
   end
 
 
