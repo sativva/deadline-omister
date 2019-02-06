@@ -19,7 +19,7 @@ class ProductsUpdateJob < ApplicationJob
     p "_____________size"
     p ShopifyAPI::Product.find(:all).select{ |p| p.id == @p_id}.size
     # handling update by delete
-    if  ShopifyAPI::Product.find(:all, params: {limit: 250}).select{|p| p.id.to_s == @p_id}.size > 0
+    if  ShopifyAPI::Product.find(:all, params: {limit: 250}).select{|p| p.id == @p_id}.size > 0
       @shopify_product = ShopifyAPI::Product.find(@p_id)
 
       # if the product has a deadline set
