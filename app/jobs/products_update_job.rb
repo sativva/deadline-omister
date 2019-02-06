@@ -47,8 +47,8 @@ class ProductsUpdateJob < ApplicationJob
 
     # get the deadline and transform to DateTime
     @deadline = @shopify_product.metafields.select { |meta| meta.attributes["key"] == "deadline"}.first.value
-    # @date_dead_line = Time.parse(@deadline)
-    @date_dead_line = Time.now + 50
+    @date_dead_line = Time.parse(@deadline)
+    # @date_dead_line = Time.now + 50
 
     # if there is an unpublish job for this product, cancel it
     Sidekiq::ScheduledSet.new.each do |jobi|
